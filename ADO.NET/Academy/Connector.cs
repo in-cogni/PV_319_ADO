@@ -11,6 +11,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Academy
 {
@@ -18,14 +19,15 @@ namespace Academy
     {
         readonly string CONNECTION_STRING;// = ConfigurationManager.ConnectionStrings["PV_319_Import"].ConnectionString;
         SqlConnection connection;
-        public Connector(string connection_string)
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        public Connector(string connection_string, ToolStripStatusLabel toolStripStatusLabel1)
         {
             //CONNECTION_STRING = ConfigurationManager.ConnectionStrings["PV_319_Import"].ConnectionString;
             CONNECTION_STRING = connection_string;
             connection = new SqlConnection(CONNECTION_STRING);
             AllocConsole();
             Console.WriteLine(CONNECTION_STRING);
-
+            this.toolStripStatusLabel1 = toolStripStatusLabel1;
         }
         ~Connector()
         {
@@ -78,6 +80,34 @@ namespace Academy
         public static extern bool AllocConsole();
         [DllImport("kernel32.dll")]
         public static extern bool FreeConsole();
+        public void StatusStrip()
+        {
+            try
+            {
+                connection.Open();
 
+                int studentCount = GetRecordCount(connection, "Students");// Получаем количество студентов
+                int groupCount = GetRecordCount(connection, "Groups");// Получаем количество групп
+                int directionCount = GetRecordCount(connection, "Directions");// Получаем количество направлений
+                int disciplineCount = GetRecordCount(connection, "Disciplines");// Получаем количество дисциплин
+                int teacherCount = GetRecordCount(connection, "Teachers");// Получаем количество преподавателей
+
+                // Обновляем статус-строку
+                toolStripStatusLabel1.Text = $"Студенты: {studentCount}, Группы: {groupCount}, Направления: {directionCount}, Дисциплины: {disciplineCount}, Преподаватели: {teacherCount}";
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: \n" + ex.Message);
+            }
+        }
+        private int GetRecordCount(SqlConnection connection, string tableName)
+        {
+            using (SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM {tableName}", connection))
+            {
+                return (int)command.ExecuteScalar();
+            }
+        }
     }
+   
 }
