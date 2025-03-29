@@ -32,8 +32,11 @@
             this.toolStripStatusLabelCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageStudents = new System.Windows.Forms.TabPage();
+            this.comboBoxStDirections = new System.Windows.Forms.ComboBox();
+            this.comboBoxStGroups = new System.Windows.Forms.ComboBox();
             this.dgvStudents = new System.Windows.Forms.DataGridView();
             this.tabPageGroups = new System.Windows.Forms.TabPage();
+            this.comboBoxGroups = new System.Windows.Forms.ComboBox();
             this.dgvGroups = new System.Windows.Forms.DataGridView();
             this.tabPageDirections = new System.Windows.Forms.TabPage();
             this.dgvDirections = new System.Windows.Forms.DataGridView();
@@ -92,6 +95,8 @@
             // 
             // tabPageStudents
             // 
+            this.tabPageStudents.Controls.Add(this.comboBoxStDirections);
+            this.tabPageStudents.Controls.Add(this.comboBoxStGroups);
             this.tabPageStudents.Controls.Add(this.dgvStudents);
             this.tabPageStudents.Location = new System.Drawing.Point(4, 22);
             this.tabPageStudents.Name = "tabPageStudents";
@@ -100,6 +105,26 @@
             this.tabPageStudents.TabIndex = 0;
             this.tabPageStudents.Text = "Students";
             this.tabPageStudents.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxStDirections
+            // 
+            this.comboBoxStDirections.FormattingEnabled = true;
+            this.comboBoxStDirections.Location = new System.Drawing.Point(3, 6);
+            this.comboBoxStDirections.Name = "comboBoxStDirections";
+            this.comboBoxStDirections.Size = new System.Drawing.Size(173, 21);
+            this.comboBoxStDirections.TabIndex = 2;
+            this.comboBoxStDirections.Text = "Отобразить по направлению";
+            this.comboBoxStDirections.SelectedIndexChanged += new System.EventHandler(this.comboBoxStDirections_SelectedIndexChanged);
+            // 
+            // comboBoxStGroups
+            // 
+            this.comboBoxStGroups.FormattingEnabled = true;
+            this.comboBoxStGroups.Location = new System.Drawing.Point(194, 6);
+            this.comboBoxStGroups.Name = "comboBoxStGroups";
+            this.comboBoxStGroups.Size = new System.Drawing.Size(142, 21);
+            this.comboBoxStGroups.TabIndex = 1;
+            this.comboBoxStGroups.Text = "Группа";
+            this.comboBoxStGroups.SelectedIndexChanged += new System.EventHandler(this.comboBoxStGroups_SelectedIndexChanged);
             // 
             // dgvStudents
             // 
@@ -115,6 +140,7 @@
             // 
             // tabPageGroups
             // 
+            this.tabPageGroups.Controls.Add(this.comboBoxGroups);
             this.tabPageGroups.Controls.Add(this.dgvGroups);
             this.tabPageGroups.Location = new System.Drawing.Point(4, 22);
             this.tabPageGroups.Name = "tabPageGroups";
@@ -123,6 +149,16 @@
             this.tabPageGroups.TabIndex = 1;
             this.tabPageGroups.Text = "Groups";
             this.tabPageGroups.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxGroups
+            // 
+            this.comboBoxGroups.FormattingEnabled = true;
+            this.comboBoxGroups.Location = new System.Drawing.Point(3, 3);
+            this.comboBoxGroups.Name = "comboBoxGroups";
+            this.comboBoxGroups.Size = new System.Drawing.Size(171, 21);
+            this.comboBoxGroups.TabIndex = 1;
+            this.comboBoxGroups.Text = "Отобразить по направлению ";
+            this.comboBoxGroups.SelectedIndexChanged += new System.EventHandler(this.comboBoxGroups_SelectedIndexChanged);
             // 
             // dgvGroups
             // 
@@ -271,6 +307,9 @@
         private System.Windows.Forms.DataGridView dgvDisciplines;
         private System.Windows.Forms.DataGridView dgvTeachers;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCount;
+        private System.Windows.Forms.ComboBox comboBoxGroups;
+        private System.Windows.Forms.ComboBox comboBoxStDirections;
+        private System.Windows.Forms.ComboBox comboBoxStGroups;
     }
 }
 
