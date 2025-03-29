@@ -46,6 +46,7 @@
             this.dgvTeachers = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.cbGroupsDirections = new System.Windows.Forms.ComboBox();
             this.statusStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageStudents.SuspendLayout();
@@ -140,6 +141,7 @@
             // 
             // tabPageGroups
             // 
+            this.tabPageGroups.Controls.Add(this.cbGroupsDirections);
             this.tabPageGroups.Controls.Add(this.comboBoxGroups);
             this.tabPageGroups.Controls.Add(this.dgvGroups);
             this.tabPageGroups.Location = new System.Drawing.Point(4, 22);
@@ -259,6 +261,16 @@
             this.dataGridView1.Size = new System.Drawing.Size(240, 150);
             this.dataGridView1.TabIndex = 0;
             // 
+            // cbGroupsDirections
+            // 
+            this.cbGroupsDirections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbGroupsDirections.FormattingEnabled = true;
+            this.cbGroupsDirections.Location = new System.Drawing.Point(181, 3);
+            this.cbGroupsDirections.Name = "cbGroupsDirections";
+            this.cbGroupsDirections.Size = new System.Drawing.Size(121, 21);
+            this.cbGroupsDirections.TabIndex = 2;
+            this.cbGroupsDirections.SelectedIndexChanged += new System.EventHandler(this.cbGroupsDirections_SelectedIndexChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +322,7 @@
         private System.Windows.Forms.ComboBox comboBoxGroups;
         private System.Windows.Forms.ComboBox comboBoxStDirections;
         private System.Windows.Forms.ComboBox comboBoxStGroups;
+        private System.Windows.Forms.ComboBox cbGroupsDirections;
     }
 }
 

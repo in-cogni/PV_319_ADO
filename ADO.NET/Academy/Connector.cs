@@ -124,6 +124,25 @@ namespace Academy
             reader.Close();
             connection.Close();
         }
+
+        public Dictionary<string, int> GetDictionary(string colums, string tables)
+        {
+            Dictionary<string, int> values = new Dictionary<string, int>();
+            string cmd = $"SELECT {colums} FROM {tables}";   
+            SqlCommand command = new SqlCommand (cmd, connection);
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader ();
+            if(reader.HasRows)
+            {
+                while(reader.Read())
+                {
+                    values[reader[1].ToString()] = Convert.ToInt32(reader[0]);
+                }
+            }
+            reader.Close();
+            connection.Close();
+            return values;
+        }
     }
    
 }
