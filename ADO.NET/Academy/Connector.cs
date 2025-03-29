@@ -33,12 +33,13 @@ namespace Academy
         {
             FreeConsole();
         }
-        public DataTable Select(string colums, string tables, string condition="")
+        public DataTable Select(string colums, string tables, string condition="", string group_by = "")
         {
 
             DataTable table = null;
             string cmd = $"SELECT {colums} FROM {tables}";
             if (condition != "") cmd += $" WHERE {condition}";
+            if (group_by != "") cmd += $" GROUP BY {group_by}";
             cmd += ";";
             SqlCommand command = new SqlCommand(cmd, connection);
             connection.Open();
@@ -107,6 +108,21 @@ namespace Academy
             {
                 return (int)command.ExecuteScalar();
             }
+        }
+        public void ComboBox(ComboBox comboBox, string tablename, string column, string condition = "")//добавление строк в combobox 
+        {
+            comboBox.Items.Clear();
+            string cmd = $"SELECT DISTINCT {column} FROM {tablename}";
+            if (condition != "") cmd += $" WHERE {condition}";
+            SqlCommand command = new SqlCommand(cmd, connection);
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            while(reader.Read())
+            {
+                comboBox.Items.Add(reader.GetString(0));
+            }
+            reader.Close();
+            connection.Close();
         }
     }
    
