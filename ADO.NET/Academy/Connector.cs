@@ -125,10 +125,11 @@ namespace Academy
             connection.Close();
         }
 
-        public Dictionary<string, int> GetDictionary(string colums, string tables)
+        public Dictionary<string, int> GetDictionary(string colums, string tables,string condition="")
         {
             Dictionary<string, int> values = new Dictionary<string, int>();
-            string cmd = $"SELECT {colums} FROM {tables}";   
+            string cmd = $"SELECT {colums} FROM {tables}";
+            if (condition != "") cmd += $" WHERE {condition}";
             SqlCommand command = new SqlCommand (cmd, connection);
             connection.Open();
             SqlDataReader reader = command.ExecuteReader ();

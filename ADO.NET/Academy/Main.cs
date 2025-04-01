@@ -16,7 +16,7 @@ namespace Academy
     {
         Connector connector;
         Dictionary<string, int> d_directions;
-
+        Dictionary<string, int> d_groups;
         DataGridView[] tables;
 
         Query[] queries = new Query[]
@@ -24,8 +24,8 @@ namespace Academy
             new Query
             (
                 "last_name,first_name,middle_name,birth_date,group_name,direction_name",
-                            "Students,Groups,Directions",
-                            "[group]=group_id AND direction=direction_id"
+                            "Students JOIN Groups ON ([group]=group_id) JOIN Directions ON (direction=direction_id)"
+                            //"[group]=group_id AND direction=direction_id"
                    ),
             new Query
             (
@@ -57,21 +57,27 @@ namespace Academy
         {
             InitializeComponent();
             tables = new DataGridView[]
-          {
-            dgvStudents,
-            dgvGroups,
-            dgvDirections,
-            dgvDisciplines,
-            dgvTeachers
-
-          };
+            {
+                dgvStudents,
+                dgvGroups,
+                dgvDirections,
+                dgvDisciplines,
+                dgvTeachers
+            };
 
             connector = new Connector
                 (
                     ConfigurationManager.ConnectionStrings["PV_319_Import"].ConnectionString, toolStripStatusLabelCount
                 );
             d_directions = connector.GetDictionary("*", "Directions");
+            d_groups = connector.GetDictionary("group_id,group_name", "Groups");
+            
+            cbStudentsGroups.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
             cbGroupsDirections.Items.AddRange(d_directions.Select(k => k.Key).ToArray());
+            cbStudentsDirection.Items.AddRange(d_directions.Select(d => d.Key).ToArray());
+            cbStudentsGroups.Items.Insert(0, "Все группы");
+            cbStudentsDirection.Items.Insert(0, "Все направления");
+            cbStudentsDirection.SelectedIndex = cbStudentsGroups.SelectedIndex = 0;
             //dgv - DataGridView
             dgvStudents.DataSource = connector.Select
                 (
@@ -86,18 +92,23 @@ namespace Academy
             //connector.StatusStrip();
 
             toolStripStatusLabelCount.Text = $"Количество студентов: {dgvStudents.RowCount - 1}.";
-
+            loadPage(0);
             connector.ComboBox(comboBoxGroups, "Directions", "direction_name");
             connector.ComboBox(comboBoxStDirections, "Directions", "direction_name");
         }
-
-        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        void loadPage(int i, Query query = null)
         {
-            int i = tabControl.SelectedIndex;
-            Query query = queries[tabControl.SelectedIndex];
+            if(query==null)query = queries[tabControl.SelectedIndex];
             tables[i].DataSource
                 = connector.Select(query.Columns, query.Tables, query.Condition, query.Group_by);
             toolStripStatusLabelCount.Text = status_messages[i] + CountRecordInDGV(tables[i]);
+
+        }
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //int i = tabControl.SelectedIndex;
+            loadPage(tabControl.SelectedIndex);
+#if true
             //switch(tabControl.SelectedIndex)
             //{
             //    case 0:
@@ -154,7 +165,8 @@ namespace Academy
             //        dgvTeachers.DataSource = connector.Select("*", "Teachers");
             //        toolStripStatusLabelCount.Text = $"Количество преподавателей: {dgvTeachers.RowCount - 1}.";
             //        break;
-            //}
+            //}  
+#endif
         }
 
         private void comboBoxGroups_SelectedIndexChanged(object sender, EventArgs e)
@@ -211,7 +223,87 @@ namespace Academy
         int CountRecordInDGV(DataGridView dgv)
         {
             return dgv.RowCount == 0 ? 0 : dgv.Rows.Count - 1;
-
         }
+
+        private void checkBEmptyDirections_CheckedChanged(object sender, EventArgs e)//пустые направления в Directions
+        {
+            checkBUnEmptyDirections.Checked = true ? false : true;//убираем галку во втором checkBox, чтобы 2 галки не стояли одновременно
+            dgvDirections.Columns.Clear();
+            if (checkBEmptyDirections.Checked)//если нажали галку
+            {
+                dgvDirections.DataSource = connector.Select
+                    (
+                        "direction_name,COUNT(DISTINCT group_id) AS N'Количество групп', COUNT(stud_id) AS N'Количество студентов'",
+                        "Students RIGHT JOIN Groups ON([group]=group_id) RIGHT JOIN Directions ON(direction=direction_id)",
+                        "",
+                        "direction_name HAVING COUNT(DISTINCT group_id)=0 AND COUNT(stud_id)=0"//тут добавлено условие отбора 
+                    );                                                                           //если есть пустые строки
+            }
+            else//если сняли галку - возвращаем все обратно
+            {
+                dgvDirections.DataSource = connector.Select
+                    (
+                        "direction_name,COUNT(DISTINCT group_id) AS N'Количество групп', COUNT(stud_id) AS N'Количество студентов'",
+                        "Students RIGHT JOIN Groups ON([group]=group_id) RIGHT JOIN Directions ON(direction=direction_id)",
+                        "",
+                        "direction_name"
+                    );
+            }
+        }
+
+        private void checkBUnEmptyDirections_CheckedChanged(object sender, EventArgs e)//частично или полностью заполненные направления в Directions
+        {
+            checkBEmptyDirections.Checked = true ? false : true;//убираем галку во втором checkBox
+            dgvDirections.Columns.Clear();
+            if (checkBUnEmptyDirections.Checked)//если нажали галку
+            {
+                dgvDirections.DataSource = connector.Select
+                    (
+                        "direction_name,COUNT(DISTINCT group_id) AS N'Количество групп', COUNT(stud_id) AS N'Количество студентов'",
+                        "Students RIGHT JOIN Groups ON([group]=group_id) RIGHT JOIN Directions ON(direction=direction_id)",
+                        "",
+                        "direction_name HAVING COUNT(DISTINCT group_id)!=0 OR COUNT(stud_id)!=0"//тут добавлено условие отбора 
+                    );                                                                           //если хотя бы 1 строка не пустая
+            }
+            else//если сняли галку - возвращаем все обратно
+            {
+                dgvDirections.DataSource = connector.Select
+                    (
+                        "direction_name,COUNT(DISTINCT group_id) AS N'Количество групп', COUNT(stud_id) AS N'Количество студентов'",
+                        "Students RIGHT JOIN Groups ON([group]=group_id) RIGHT JOIN Directions ON(direction=direction_id)",
+                        "",
+                        "direction_name"
+                    );
+            }
+        }
+
+        private void cbStudentsDirection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int i = cbStudentsDirection.SelectedIndex;
+            
+            Dictionary<string, int> d_groups = connector.GetDictionary
+                (
+                "group_id,group_name", 
+                "Groups", 
+                i==0?"":$"direction={d_directions[cbStudentsDirection.SelectedItem.ToString()]}"
+                );
+            cbStudentsGroups.Items.Clear();
+            cbStudentsGroups.Items.AddRange(d_groups.Select(g=>g.Key).ToArray());
+
+            //int t = tabControl.SelectedIndex;
+            //dgvStudents.DataSource = 
+            //    connector.Select
+            //    (
+            //    queries[t].Columns, 
+            //    queries[t].Tables,
+            //    i==0?"":$"direction={d_directions[cbStudentsDirection.SelectedItem.ToString()]}"
+
+            //    );
+            Query query = new Query(queries[0]);
+            query.Condition = (i == 0 ? "" : $"direction={d_directions[cbStudentsDirection.SelectedItem.ToString()]}");
+            loadPage(0, query);
+        }
+
+       
     }
 }

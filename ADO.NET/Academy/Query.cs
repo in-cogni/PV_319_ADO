@@ -10,9 +10,9 @@ namespace Academy
     {
         public string Columns { get; }
         public string Tables { get; }
-        public string Condition { get; }
+        public string Condition { get; set; }
         public string Group_by { get; }
-        public Query(string colums, string tables, string condition="", string group_by="")
+        public Query(string colums, string tables, string condition = "", string group_by = "")
         {
             Columns = colums;
             Tables = tables;
@@ -20,5 +20,13 @@ namespace Academy
             Group_by = group_by;
 
         }
+        public Query(Query other)
+        {
+            this.Columns = other.Columns;
+            this.Tables = other.Tables;
+            this.Condition = other.Condition;
+            this.Group_by = other.Group_by;
+        }
+
     }
 }
