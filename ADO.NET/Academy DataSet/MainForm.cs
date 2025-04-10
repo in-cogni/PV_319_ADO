@@ -22,6 +22,8 @@ namespace Academy_DataSet
         SqlConnection connection;
         DataSet GroupsRelatedData;
         List<string> tables;
+        List<string> commands;
+
         public MainForm()
         {
             InitializeComponent();
@@ -54,14 +56,22 @@ namespace Academy_DataSet
                     name,
                     GroupsRelatedData.Tables[parent.Split(',')[0]].Columns[parent.Split(',')[1]],
                     GroupsRelatedData.Tables[child.Split(',')[0]].Columns[child.Split(',')[1]]
-                );
+                ); 
         }
         public void Load()
         {
             string[] tables = this.tables.ToArray();
             for (int i = 0; i < tables.Length; i++)
             {
-                string cmd = $"SELECT * FROM {tables[i].Split(',')[0]}";
+                string columns = "";
+                DataColumnCollection column_collection = GroupsRelatedData.Tables[tables[i].Split(',')[0]].Columns;
+                foreach (DataColumn column in column_collection)
+                {
+                    columns += $"[{column.ColumnName}],";
+                }
+                columns = columns.Remove(columns.LastIndexOf(','));
+                Console.WriteLine(columns);
+                string cmd = $"SELECT {columns} FROM {tables[i].Split(',')[0]}";
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd, connection);
                 adapter.Fill(GroupsRelatedData.Tables[tables[i].Split(',')[0]]);
             }
@@ -170,7 +180,7 @@ namespace Academy_DataSet
         void Print(string table)
         {
             Console.WriteLine("----------------------------------------------------------------------------------------");
-            Console.WriteLine();
+            Console.WriteLine(table);
             string relation_name = "";
             string parent_table_name = "";
             string parent_column_name = "";
@@ -193,8 +203,8 @@ namespace Academy_DataSet
                     if (i == parent_index)
                     {
                         DataRow parent_row = row.GetParentRow(relation_name);
+                        Console.Write(parent_row[parent_column_name]);
                         //Console.Write(parent_row[parent_column_name]);
-                        GroupsRelatedData.Relations;
                     }
                     else
                         Console.Write(row[i].ToString() + "\t");
@@ -210,9 +220,10 @@ namespace Academy_DataSet
                     //Console.WriteLine(parent_row["direction_name"]);
                     //}
                     //Console.WriteLine();
-                
-                Console.WriteLine("----------------------------------------------------------------------------------------");
+                Console.WriteLine();
             }
+            Console.WriteLine("----------------------------------------------------------------------------------------");
+
         }
         bool hasParents(string table)
         {
