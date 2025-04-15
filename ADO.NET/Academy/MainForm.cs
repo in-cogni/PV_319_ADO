@@ -20,6 +20,8 @@ namespace Academy
         public Dictionary<string, int> d_directions;
         public Dictionary<string, int> d_groups;
 
+        public Dictionary<ComboBox, List<ComboBox>> d_dependencies;
+
         DataGridView[] tables;
 
         Query[] queries = new Query[]
@@ -59,6 +61,12 @@ namespace Academy
         public MainForm()
         {
             InitializeComponent();
+
+            d_dependencies = new Dictionary<ComboBox, List<ComboBox>>()
+            {
+                {cbStudentsDirection, new List<ComboBox>(){cbStudentsGroup } }
+            };
+
             tables = new DataGridView[]
             {
                 dgvStudents,
@@ -292,14 +300,21 @@ namespace Academy
             int i = (sender as ComboBox).SelectedIndex;
             #region Filtercb_StudentsGroup
             //Фильтруем выпадающий список групп на вкладке 'Students':
-            Dictionary<string, int> d_groups = connector.GetDictionary
-                (
-                "group_id,group_name",
-                "Groups",
-                i == 0 ? "" : $"[{cb_suffix.ToLower()}]={d_directions[(sender as ComboBox).SelectedItem.ToString()]}"
-                );
-            cbStudentsGroup.Items.Clear();
-            cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
+            //Dictionary<string, int> d_groups = connector.GetDictionary
+            //    (
+            //    "group_id,group_name",
+            //    "Groups",
+            //    i == 0 ? "" : $"[{cb_suffix.ToLower()}]={d_directions[(sender as ComboBox).SelectedItem.ToString()]}"
+            //    );
+            //cbStudentsGroup.Items.Clear();
+            //cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
+            if(d_dependencies.ContainsKey(sender as ComboBox))
+            {
+                foreach(ComboBox cb in d_dependencies[sender as ComboBox])
+                {
+                    GetDependentData(cb, sender as ComboBox);
+                }
+            }
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             #endregion            
@@ -309,6 +324,32 @@ namespace Academy
             if (query.Condition == "") query.Condition = condition;
             else if(condition!="") query.Condition += $" AND {condition}";
             loadPage(tabControl.SelectedIndex, query);
+        }
+        void GetDependentData(ComboBox dependent, ComboBox determinant)
+        {
+            Console.WriteLine($"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine(dependent.Name +"\t" + determinant.Name);
+            string dependent_root = 
+                dependent.Name.Substring(Array.FindLastIndex<char>(dependent.Name.ToCharArray(), Char.IsUpper));
+            string determinant_root = 
+                determinant.Name.Substring(Array.FindLastIndex<char>(determinant.Name.ToCharArray(), Char.IsUpper));
+
+            Dictionary<string, int> dictionary =
+                connector.GetDictionary
+                (
+                    $"{dependent_root.ToLower()}_id,{dependent_root.ToLower()}_name",
+                    $"{dependent_root}s,{determinant_root}s",
+                    determinant.SelectedItem == null || determinant.SelectedIndex<=0? "":$"{determinant_root.ToLower()}={determinant.SelectedIndex}"
+                );
+            foreach(KeyValuePair<string, int> d in dictionary)
+            {
+                Console.WriteLine($"{d.Value}\t{ d.Key}");
+            }
+            dependent.Items.Clear();
+            dependent.Items.AddRange(dictionary.Select(d=> d.Key).ToArray());
+
+            Console.WriteLine(dependent_root);
+            Console.WriteLine($"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         }
         private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
