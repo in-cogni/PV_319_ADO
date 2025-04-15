@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 
 namespace Academy
 {
-    public partial class Main : Form
+    public partial class MainForm : Form
     {
         Connector connector;
 
@@ -56,7 +56,7 @@ namespace Academy
             $"Количество дисциплин",
             $"Количество преподавателей"
         };
-        public Main()
+        public MainForm()
         {
             InitializeComponent();
             tables = new DataGridView[]
@@ -74,13 +74,13 @@ namespace Academy
                 );
             d_directions = connector.GetDictionary("*", "Directions");
             d_groups = connector.GetDictionary("group_id,group_name", "Groups");
-            cbStudentsGroups.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
+            cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
             cbGroupsDirection.Items.AddRange(d_directions.Select(k => k.Key).ToArray());
             cbStudentsDirection.Items.AddRange(d_directions.Select(d => d.Key).ToArray());
-            cbStudentsGroups.Items.Insert(0, "Все группы");
+            cbStudentsGroup.Items.Insert(0, "Все группы");
             cbStudentsDirection.Items.Insert(0, "Все направления");
             cbGroupsDirection.Items.Insert(0, "Все направлнения");
-            cbStudentsGroups.SelectedIndex = 0;
+            cbStudentsGroup.SelectedIndex = 0;
             cbStudentsDirection.SelectedIndex = 0;
             cbGroupsDirection.SelectedIndex = 0;
             //dgv - DataGridView
@@ -275,7 +275,7 @@ namespace Academy
             }
         }
 
-        private void cbDirection_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             string cb_name = (sender as ComboBox).Name;
             string tab_name = tabControl.SelectedTab.Name;
@@ -296,24 +296,24 @@ namespace Academy
                 (
                 "group_id,group_name",
                 "Groups",
-                i == 0 ? "" : $"{cb_suffix.ToLower()}={d_directions[(sender as ComboBox).SelectedItem.ToString()]}"
+                i == 0 ? "" : $"[{cb_suffix.ToLower()}]={d_directions[(sender as ComboBox).SelectedItem.ToString()]}"
                 );
-            cbStudentsGroups.Items.Clear();
-            cbStudentsGroups.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
+            cbStudentsGroup.Items.Clear();
+            cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key).ToArray());
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             #endregion            
             Query query = new Query(queries[tabControl.SelectedIndex]);
             string condition = 
-                (i == 0 || (sender as ComboBox).SelectedItem==null ? "" : $"{cb_suffix.ToLower()}={dictionary[$"{(sender as ComboBox).SelectedItem}"]}");
+                (i == 0 || (sender as ComboBox).SelectedItem==null ? "" : $"[{cb_suffix.ToLower()}]={dictionary[$"{(sender as ComboBox).SelectedItem}"]}");
             if (query.Condition == "") query.Condition = condition;
             else if(condition!="") query.Condition += $" AND {condition}";
             loadPage(tabControl.SelectedIndex, query);
         }
-
         private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
+       
     }
 }

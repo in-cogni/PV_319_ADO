@@ -1,6 +1,6 @@
 ﻿namespace Academy
 {
-    partial class Main
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,7 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageStudents = new System.Windows.Forms.TabPage();
             this.cbStudentsDirection = new System.Windows.Forms.ComboBox();
-            this.cbStudentsGroups = new System.Windows.Forms.ComboBox();
+            this.cbStudentsGroup = new System.Windows.Forms.ComboBox();
             this.comboBoxStDirections = new System.Windows.Forms.ComboBox();
             this.comboBoxStGroups = new System.Windows.Forms.ComboBox();
             this.dgvStudents = new System.Windows.Forms.DataGridView();
@@ -101,7 +101,7 @@
             // tabPageStudents
             // 
             this.tabPageStudents.Controls.Add(this.cbStudentsDirection);
-            this.tabPageStudents.Controls.Add(this.cbStudentsGroups);
+            this.tabPageStudents.Controls.Add(this.cbStudentsGroup);
             this.tabPageStudents.Controls.Add(this.comboBoxStDirections);
             this.tabPageStudents.Controls.Add(this.comboBoxStGroups);
             this.tabPageStudents.Controls.Add(this.dgvStudents);
@@ -121,15 +121,16 @@
             this.cbStudentsDirection.Name = "cbStudentsDirection";
             this.cbStudentsDirection.Size = new System.Drawing.Size(121, 21);
             this.cbStudentsDirection.TabIndex = 4;
-            this.cbStudentsDirection.SelectedIndexChanged += new System.EventHandler(this.cbDirection_SelectedIndexChanged);
+            this.cbStudentsDirection.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
-            // cbStudentsGroups
+            // cbStudentsGroup
             // 
-            this.cbStudentsGroups.FormattingEnabled = true;
-            this.cbStudentsGroups.Location = new System.Drawing.Point(503, 6);
-            this.cbStudentsGroups.Name = "cbStudentsGroups";
-            this.cbStudentsGroups.Size = new System.Drawing.Size(121, 21);
-            this.cbStudentsGroups.TabIndex = 3;
+            this.cbStudentsGroup.FormattingEnabled = true;
+            this.cbStudentsGroup.Location = new System.Drawing.Point(503, 6);
+            this.cbStudentsGroup.Name = "cbStudentsGroup";
+            this.cbStudentsGroup.Size = new System.Drawing.Size(121, 21);
+            this.cbStudentsGroup.TabIndex = 3;
+            this.cbStudentsGroup.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // comboBoxStDirections
             // 
@@ -185,7 +186,7 @@
             this.cbGroupsDirection.Name = "cbGroupsDirection";
             this.cbGroupsDirection.Size = new System.Drawing.Size(121, 21);
             this.cbGroupsDirection.TabIndex = 2;
-            this.cbGroupsDirection.SelectedIndexChanged += new System.EventHandler(this.cbDirection_SelectedIndexChanged);
+            this.cbGroupsDirection.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // comboBoxGroups
             // 
@@ -320,7 +321,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(240, 150);
             this.dataGridView1.TabIndex = 0;
             // 
-            // Main
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -328,7 +329,7 @@
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.statusStrip1);
             this.MinimumSize = new System.Drawing.Size(640, 480);
-            this.Name = "Main";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Academy_PV_319";
             this.statusStrip1.ResumeLayout(false);
@@ -376,7 +377,7 @@
         private System.Windows.Forms.CheckBox checkBEmptyDirections;
         private System.Windows.Forms.CheckBox checkBUnEmptyDirections;
         private System.Windows.Forms.ComboBox cbStudentsDirection;
-        private System.Windows.Forms.ComboBox cbStudentsGroups;
+        private System.Windows.Forms.ComboBox cbStudentsGroup;
     }
 }
 
