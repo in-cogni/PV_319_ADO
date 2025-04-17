@@ -15,7 +15,7 @@ namespace ADO.NET
 			//1) Берем строку подключения:
 			const int PADDING = 30;
 			//const string CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Movies;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["Movies_PV_319"].ConnectionString;
+            string CONNECTION_STRING = ConfigurationManager.ConnectionStrings["Movies"].ConnectionString;
 
             Console.WriteLine(CONNECTION_STRING);
 

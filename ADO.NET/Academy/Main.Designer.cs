@@ -313,8 +313,8 @@
 		private System.Windows.Forms.TabPage tabPageTeachers;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TabPage tabPageGroups;
-        private System.Windows.Forms.TabPage tabPageStudents;
+       // private System.Windows.Forms.TabPage tabPageGroups;
+       // private System.Windows.Forms.TabPage tabPageStudents;
 		private System.Windows.Forms.DataGridView dgvStudents;
         private System.Windows.Forms.DataGridView dgvGroups;
         private System.Windows.Forms.DataGridView dgvDirections;

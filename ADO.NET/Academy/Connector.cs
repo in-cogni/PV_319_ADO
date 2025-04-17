@@ -37,7 +37,7 @@ namespace Academy
 		{
 			DataTable table = null;
 
-            DataTable table = null;
+            //DataTable table = null;
             string cmd = $"SELECT {colums} FROM {tables}";
 			if (condition != "") cmd += $" WHERE {condition}";
             if (group_by != "") cmd += $" GROUP BY {group_by}";
