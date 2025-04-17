@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FC73E0BF-F352-499B-8919-A535C09CFAAF}</ProjectGuid>
+    <ProjectGuid>{BE717978-C494-4312-8B03-9521B7FA6D08}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Academy</RootNamespace>
     <AssemblyName>Academy</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>

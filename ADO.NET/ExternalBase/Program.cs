@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ExternalBase
 {
-     class Program
-    {
-        static void Main(string[] args)
-        {
-            Connector.Select("*", "Disciplines");
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			Connector.Select("*", "Disciplines");
 
             int value;
             //1
@@ -33,6 +33,6 @@ namespace ExternalBase
             {
                 Console.WriteLine($"Количество студентов: {value}");
             }
-        }
-    }
+		}
+	}
 }

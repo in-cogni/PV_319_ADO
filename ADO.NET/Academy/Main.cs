@@ -12,22 +12,22 @@ using System.Configuration;
 
 namespace Academy
 {
-    public partial class Main : Form
-    {
+	public partial class Main : Form
+	{
         Connector connector;
         Dictionary<string, int> d_directions;
-        public Main()
-        {
+		public Main()
+		{
 
-            InitializeComponent();
+			InitializeComponent();
 
             connector = new Connector
-                (
+				(
                     ConfigurationManager.ConnectionStrings["PV_319_Import"].ConnectionString, toolStripStatusLabelCount
-                );
+				);
             d_directions = connector.GetDictionary("*", "Directions");
             cbGroupsDirections.Items.AddRange(d_directions.Select(k => k.Key).ToArray());
-            //dgv - DataGridView
+			//dgv - DataGridView
             dgvStudents.DataSource = connector.Select
                 (
                     "last_name,first_name,middle_name,birth_date,group_name,direction_name",
@@ -162,6 +162,6 @@ namespace Academy
         {
             return dgv.RowCount == 0? 0: dgv.Rows.Count - 1;
             
-        }
-    }
+		}
+	}
 }
